@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito de compra</title>
+
+    <link rel="stylesheet" href="estilos/estilos.css">
+</head>
+<body>
+
+    <header>
+
+        <h1>TechNova Solutions</h1>
+
+        <nav>
+            <a href="index.html">Inicio</a>
+            <a href="tienda.html">Tienda</a>
+        </nav>
+
+    </    <div class="card">
+
+            <h2>Carrito de compra</h2>
+
+            <div id="listaProductos"></div>
+
+            <hr>
+
+            <h3 id="cantidad"></h3>
+
+            <h2 id="total"></h2>
+
+            <br>
+
+            <button
+                id="btnVaciar"
+                class="btn"
+                onclick="vaciarCarrito()">
+                Vaciar carrito
+            </button>
+
+            <a
+                id="btnComprar"
+                class="btn"
+                href="confirmacion.html">
+                Finalizar compra
+            </a>
+
+        </div>
+
+    </div>
+
+    <script>
+
+        let carrito =
+            JSON.parse(
+                localStorage.getItem("carrito")
+            ) || [];
+
+        let lista =
+            document.getElementById(
+                "listaProductos"
+            );
+
+        let total = 0;
+
+        if (carrito.length === 0) {
+
+            lista.innerHTML = `
+                <p>
+                    No hay productos en el carrito.
+                </p>
+            `;
+
+            document.getElementById(
+                "btnComprar"
+            ).style.display = "none";
+
+            document.getElementById(
+                "btnVaciar"
+            ).style.display = "none";
+
+        } else {
+
+            carrito.forEach(producto => {
+
+                lista.innerHTML += `
+
+                    <div class="card">
+
+                        <h3>
+                            ${producto.nombre}
+                        </h3>
+
+                        <p>
+                            Precio:
+                            ${producto.precio} €
+                        </p>
+
+                    </div>
+
+                `;
+
+                total +=
+                    Number(producto.precio);
+
+            });
+
+        }
+
+        document.getElementById(
+            "cantidad"
+        ).textContent =
+            "Productos en el carrito: " +
+            carrito.length;
+
+        document.getElementById(
+            "total"
+        ).textContent =
+            "Total: " +
+            total +
+            " €";
+
+        function vaciarCarrito() {
+
+            if (
+                confirm(
+                    "¿Vaciar carrito?"
+                )
+            ) {
+
+                localStorage.removeItem(
+                    "carrito"
+                );
+
+                location.reload();
+
+            }
+
+        }
+
+    </script>
+
+</body>
+</html>
